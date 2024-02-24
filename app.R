@@ -1,13 +1,3 @@
-pacman::p_load(
-  "shiny",
-  "shinythemes",
-  "tidyverse",
-  "lmerTest",
-  "parallel",
-  "foreach",
-  "doParallel"
-)
-
 
 # Define UI for easyEWAS app --------------------------------------------
 ui <- fluidPage(
@@ -59,13 +49,13 @@ ui <- fluidPage(
                      "Cox Proportional Hazards Model" = "cox"),
                    selected = "lm"),
       conditionalPanel(
-        condition = "input.model == 'lmer'",
+        condition = "input.model == 'lmer' || input.model == 'lm'",
         textInput("expovar", "Enter the Exposure Variable", value = "")
       ),
-      conditionalPanel(
-        condition = "input.model == 'lm'",
-        textInput("expovar", "Enter the Exposure Variable", value = ""),
-      ),
+  #    conditionalPanel(
+  #      condition = "input.model == 'lm'",
+  #      textInput("expovar", "Enter the Exposure Variable", value = ""),
+   #   ),
       conditionalPanel(
         condition = "input.model == 'cox'",
         textInput("status", "Enter the Status Variable", value = "")
