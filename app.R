@@ -1,4 +1,12 @@
-
+pacman::p_load(
+"shiny",
+"shinythemes",
+"tidyverse",
+"lmerTest",
+"parallel",
+"foreach",
+"doParallel"
+)
 # Define UI for easyEWAS app --------------------------------------------
 ui <- fluidPage(
   theme = shinytheme("sandstone"),
