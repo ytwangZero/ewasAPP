@@ -20,5 +20,5 @@ pacman::p_load(
   "foreach",
   "doParallel"
 )
-runGitHub("<ewasAPP>", "<ytwangZero>") 
+runGitHub("ewasAPP", "ytwangZero") 
 ```
