@@ -15,7 +15,7 @@ ui <- fluidPage(
       
       
       ## upload the data file ----
-      tags$p("Step 1: Prepare the Date Files", 
+      tags$p("Step 1: Prepare the Data Files", 
              style = "font-size: 16px; font-weight: bold; color: #317EAC;"),
       ### Input1: sample data file ----
       fileInput("sample", "Choose Sample Data File (.csv or .xlsx)",
