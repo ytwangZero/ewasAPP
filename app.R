@@ -249,12 +249,10 @@ ui <- fluidPage(
   
 ) 
 
-
+    options(shiny.maxRequestSize = 100 * 1024^2)
 server <- function(input, output, session) {
   
   datasetInput <- eventReactive(input$submit,{
-    
-    options(shiny.maxRequestSize = 20 * 1024^2)
     
     req(input$sample)
     req(input$methy)
