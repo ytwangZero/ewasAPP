@@ -8,7 +8,7 @@
 
 ## How to Run
 
-You can run the APP like so:
+You can run the APP in the R studio like so:
   
   ``` r
 shiny::runGitHub("ewasAPP", "ytwangZero") 
