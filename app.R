@@ -1,12 +1,18 @@
+if (!require("pacman")){install.packages('pacman')}
+
 pacman::p_load(
-"shiny",
-"shinythemes",
-"tidyverse",
-"lmerTest",
-"parallel",
-"foreach",
-"doParallel"
+  "shiny",
+  "shinythemes",
+  "tidyverse",
+  "lmerTest",
+  "parallel",
+  "foreach",
+  "doParallel",
+  "waiter",
+  "shinycssloaders"
 )
+
+
 # Define UI for easyEWAS app --------------------------------------------
 ui <- fluidPage(
   theme = shinytheme("sandstone"),
@@ -56,14 +62,14 @@ ui <- fluidPage(
                      "Linear Mixed-Effects Model" = "lmer",
                      "Cox Proportional Hazards Model" = "cox"),
                    selected = "lm"),
+      # conditionalPanel(
+      #   condition = "input.model == 'lmer'",
+      #   textInput("expovar", "Enter the Exposure Variable", value = "")
+      # ),
       conditionalPanel(
-        condition = "input.model == 'lmer' || input.model == 'lm'",
-        textInput("expovar", "Enter the Exposure Variable", value = "")
+        condition = "input.model == 'lm' || input.model == 'lmer'",
+        textInput("expovar", "Enter the Exposure Variable", value = ""),
       ),
-  #    conditionalPanel(
-  #      condition = "input.model == 'lm'",
-  #      textInput("expovar", "Enter the Exposure Variable", value = ""),
-   #   ),
       conditionalPanel(
         condition = "input.model == 'cox'",
         textInput("status", "Enter the Status Variable", value = "")
@@ -73,8 +79,7 @@ ui <- fluidPage(
         textInput("time", "Enter the Time Variable", value = "")
       ),
       
-      textInput("covvar", "Enter the Covariate Variable",
-                value = ""),
+      textInput("covvar", "Enter the Covariate Variable", value = ""),
       helpText("Note: Variable names should be seperated by commas, e.g., cov1,cov2,cov3"),
       
       conditionalPanel(
@@ -91,7 +96,7 @@ ui <- fluidPage(
       helpText("Note: The value should not exceed the number of physical cores of the user's computer."),
       textInput("filename", "Enter the Output file name",
                 value = ""),
-      helpText("Note: A combination of English letters and numbers, is the suffix of the user output file."),
+      helpText("Note: Customize the name of the output result file, a combination of letters and numbers, e.g., test1"),
       tags$hr(),
 
       tags$p("Step 4: Submit and Download", 
@@ -198,13 +203,13 @@ ui <- fluidPage(
         tabPanel("Results", 
                  
                  # Output: Data file ----
-                 tableOutput("ewasres"),
+                 shinycssloaders::withSpinner(tableOutput("ewasres")),
                  tags$br(),
                  tags$p("Please wait until the results are displayed here and click DOWNLOAD for full results.", 
                         style = "font-size: 14px; font-weight: bold; color: red;"),
                  tags$p("Note: Only the first 40 rows of results are shown here.",
                         style = "font-size: 14px; font-weight: bold; color: red;"),
-
+                 
                  downloadButton("downloadData", "Download")
         ),
         
@@ -249,7 +254,8 @@ ui <- fluidPage(
   
 ) 
 
-    options(shiny.maxRequestSize = 100 * 1024^2)
+
+options(shiny.maxRequestSize = 100 * 1024^2)
 server <- function(input, output, session) {
   
   datasetInput <- eventReactive(input$submit,{
@@ -296,12 +302,12 @@ server <- function(input, output, session) {
     
     #### prepare ewas data---
     if(input$model == "lm"){
-      if(input$covvar == ""){
-        covdata = as.data.frame(sampledata[,c(input$expovar)])
-        colnames(covdata)[1] = input$expovar
-      }else{
+      if(input$covvar != ""){
         VarCov = unlist(strsplit(input$covvar, ","))
         covdata = sampledata[,c(input$expovar,VarCov)]
+      }else{
+        covdata = as.data.frame(sampledata[,c(input$expovar)])
+        colnames(covdata)[1] = input$expovar
       }
       
     }else if(input$model == "lmer"){
@@ -550,7 +556,12 @@ server <- function(input, output, session) {
   # Downloadable csv of selected dataset ----
   output$downloadData <- downloadHandler(
     filename = function() {
-      paste("result_",input$filename, ".csv", sep = "")
+      if(input$filename == ""){
+        "result.csv"
+      }else{
+        paste(input$filename, ".csv", sep = "")
+      }
+      
     },
     content = function(file) {
       vroom::vroom_write(datasetInput(), file, ",")
