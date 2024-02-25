@@ -96,7 +96,7 @@ ui <- fluidPage(
       helpText("Note: The value should not exceed the number of physical cores of the user's computer."),
       textInput("filename", "Enter the Output file name",
                 value = ""),
-      helpText("Note: Customize the name of the output result file, a combination of letters and numbers, e.g., test1"),
+      helpText("Note: Customize the name of the output result file, a combination of letters and numbers, e.g., out1"),
       tags$hr(),
 
       tags$p("Step 4: Submit and Download", 
@@ -134,14 +134,14 @@ ui <- fluidPage(
                  tags$p(
                    "Note: The first column must be the sample ID. And note that all column names should comply with common naming 
                    conventions. For example, the name cannot start with a number, and cannot contain spaces or special symbols.",
-                   style = "color: red;"
+                   style = "color: brown;"
                  ),
                  tags$span(tags$b("(2) Methylation data: "), "Users also need to prepare a methylation file, requiring each row to represent a CpG site and each column 
                    to represent a sample. easyEWAS only supports .csv and .xlsx files, the sample format is as follows:"),
-                 img(src = "methydata.png", height = 336, width = 800),
+                 img(src = "methydata.png", height = 336, width = 800, style = "display: block; margin: auto;"),
                  tags$p(
                    "Note: The column name (i.e. sample ID) in the methylation file must be consistent with the sample ID of the sample data.",
-                   style = "color: red;"
+                   style = "color: brown;"
                  ),
                  tags$br(),
                  
@@ -159,7 +159,7 @@ ui <- fluidPage(
                  tags$p(
                    "Note: If you select Linear Regression or Linear Mixed-Effects Model and your exposure variable is categorical, be sure to convert it to factor type here. 
                      Variables need to be separated by commas.",
-                   style = "color: red;"
+                   style = "color: brown;"
                  ),
                  
                  
@@ -174,7 +174,7 @@ ui <- fluidPage(
                  ),
                  tags$p(
                    "Note: Be careful not to exceed the maximum number of cores supported by your device.",
-                   style = "color: red;"
+                   style = "color: brown;"
                  ),
                  
                  tags$li("Step 4: Submit and Download",style = "font-weight: bold; "),
@@ -245,7 +245,12 @@ ui <- fluidPage(
         #### FAQs-----
         tabPanel("FAQs",
                  tags$br(),
-                
+                 tags$h3("runGitHub",style = "font-weight: bold;"),
+                 tags$li("Q1: Error in initializePtr() : function 'cholmod_factor_ldetA' not provided by package 'Matrix'."),
+                 tags$li("A1: It' because you are using 'old' Matrix package. Please updata it in your R studio."),
+                 tags$code(
+                   "install.packages(\"Matrix\")",
+                 ),
         ),
       )
     )
