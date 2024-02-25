@@ -11,8 +11,7 @@
 You can run the APP like so:
   
   ``` r
-library(shiny)
-runGitHub("ewasAPP", "ytwangZero") 
+shiny::runGitHub("ewasAPP", "ytwangZero") 
 ```
  If you don't have ***shiny*** package in your device, you need to install it first.
 
