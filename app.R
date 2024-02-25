@@ -354,7 +354,7 @@ server <- function(input, output, session) {
       ewasfun <- switch (input$model,
                          "lm" = function(cg,ff,cov){
                            cov$cpg = as.vector(t(cg))
-                           out <- summary(lm(ff, data = cov))
+                           out <- base::summary(lm(ff, data = cov))
                            temp = c()
                            for (i in 2:facnum) {
                              temp = append(temp,as.vector(out$coefficients[i,c(1,2,4)]))
@@ -363,7 +363,7 @@ server <- function(input, output, session) {
                          },
                          "lmer" = function(cg,ff,cov){
                            cov$cpg = as.vector(t(cg))
-                           out <- summary(lmer(ff, data = cov))
+                           out <- base::summary(lmer(ff, data = cov))
                            temp = c()
                            for (i in 2:facnum) {
                              temp = append(temp,as.vector(out$coefficients[i,c(1,2,5)]))
@@ -375,14 +375,14 @@ server <- function(input, output, session) {
       ewasfun <- switch (input$model,
                          "lm" = function(cg,ff,cov){
                            cov$cpg = as.vector(t(cg))
-                           out <- summary(lm(ff, data = cov))
+                           out <- base::summary(lm(ff, data = cov))
                            return(c(out$coefficients[2,1],
                                     out$coefficients[2,2],
                                     out$coefficients[2,4]))
                          },
                          "lmer" = function(cg,ff,cov){
                            cov$cpg = as.vector(t(cg))
-                           out <- summary(lmer(ff, data = cov))
+                           out <- base::summary(lmer(ff, data = cov))
                            return(c(out$coefficients[2,1],
                                     out$coefficients[2,2],
                                     out$coefficients[2,5]))
@@ -392,7 +392,7 @@ server <- function(input, output, session) {
     if(input$model == "cox"){
       ewasfun = function(cg,ff,cov){
         cov$cpg = as.vector(t(cg))
-        out <- summary(coxph(ff, data = cov))
+        out <- base::summary(coxph(ff, data = cov))
         return(c(as.vector(out$conf.int[1,c(1,3,4)]),
                  out$coefficients[1,5]))
       }
@@ -423,7 +423,7 @@ server <- function(input, output, session) {
             {  # local data for results
               res <- matrix(0, nrow=ceiling(chunk.size), ncol=3*(facnum-1))
               for(x in ((i-1)*chunk.size+1):(i*chunk.size)) {
-                res[x - (i-1)*chunk.size,] <- as.numeric(t(ewasfun(methydata[x,],formula,covdata)))
+                res[x - (i-1)*chunk.size,] <- as.numeric(base::t(ewasfun(methydata[x,],formula,covdata)))
               }
               # return local results
               res
@@ -435,7 +435,7 @@ server <- function(input, output, session) {
             {  # local data for results
               res <- matrix(0, nrow=ceiling(chunk.size), ncol=3)
               for(x in ((i-1)*chunk.size+1):(i*chunk.size)) {
-                res[x - (i-1)*chunk.size,] <- as.numeric(t(ewasfun(methydata[x,],formula,covdata)))
+                res[x - (i-1)*chunk.size,] <- as.numeric(base::t(ewasfun(methydata[x,],formula,covdata)))
               }
               # return local results
               res
@@ -449,7 +449,7 @@ server <- function(input, output, session) {
           {  # local data for results
             res <- matrix(0, nrow=ceiling(chunk.size), ncol=4)
             for(x in ((i-1)*chunk.size+1):(i*chunk.size)) {
-              res[x - (i-1)*chunk.size,] <- as.numeric(t(ewasfun(methydata[x,],formula,covdata)))
+              res[x - (i-1)*chunk.size,] <- as.numeric(base::t(ewasfun(methydata[x,],formula,covdata)))
             }
             # return local results
             res
