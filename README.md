@@ -14,7 +14,7 @@ You can run the APP like so:
 library(shiny)
 runGitHub("ewasAPP", "ytwangZero") 
 ```
- If you don't have shiny package in your device, you need to install it first.
+ If you don't have ***shiny*** package in your device, you need to install it first.
 
    ``` r
 install.packages("shiny")
