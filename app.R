@@ -260,7 +260,7 @@ ui <- fluidPage(
 ) 
 
 
-options(shiny.maxRequestSize = 100 * 1024^2)
+options(shiny.maxRequestSize = 6000 * 1024^2)
 server <- function(input, output, session) {
   
   datasetInput <- eventReactive(input$submit,{
@@ -269,13 +269,13 @@ server <- function(input, output, session) {
     req(input$methy)
     
     if(substr(input$sample$datapath,nchar(input$sample$datapath)-3,nchar(input$sample$datapath)) == ".csv"){
-      sampledata = read.csv(input$sample$datapath) %>% as.data.frame()
+      sampledata = vroom::vroom(input$sample$datapath, delim = ",", show_col_types = FALSE) %>% as.data.frame()
     }else{
       sampledata = readxl::read_xlsx(input$sample$datapath) %>% as.data.frame()
     }
     
     if(substr(input$methy$datapath,nchar(input$methy$datapath)-3,nchar(input$methy$datapath)) == ".csv"){
-      methydata = read.csv(input$methy$datapath) %>% as.data.frame()
+      methydata = vroom::vroom(input$methy$datapath, delim = ",", show_col_types = FALSE) %>% as.data.frame()
     }else{
       methydata = readxl::read_xlsx(input$methy$datapath) %>% as.data.frame()
     }
