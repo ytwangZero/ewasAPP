@@ -187,9 +187,9 @@ ui <- fluidPage(
                  tags$h4("What Users Will Get:",style = "font-weight: bold;"),
                  
                  tags$li("Linear Regression Model or Linear Mixed-Effects Model: For continuity variables, regression coefficient (per 1 unit, per SD, per IQR), 
-                         standard error (per 1 unit, per SD, per IQR), significance P-value, and corrected P-value (FDR, Bofferoni). For categorical variables, 
+                         standard error (per 1 unit, per SD, per IQR), significance P-value, and corrected P-value (FDR, Bonfferoni). For categorical variables, 
                          regression coefficient, standard error, significance p-value and corrected P-value of each class relative to the reference class."),
-                 tags$li("Cox proportional risk model: HR value, 95% confidence interval, significance P-value, and corrected P-value (FDR, Bofferoni) for each methylation site."),
+                 tags$li("Cox proportional risk model: HR value, 95% confidence interval, significance P-value, and corrected P-value (FDR, Bonfferoni) for each methylation site."),
 
                  tags$br(),
                  tags$p("Hope you have a good experience!",style = "font-weight: bold;"),
@@ -480,7 +480,7 @@ server <- function(input, output, session) {
         
         #### FDR---
         if(input$adjust){
-          FDRname = paste(rep(c("FDR","Bofferoni"),each = (facnum-1)),rep(1:(facnum-1),2), sep = "_")
+          FDRname = paste(rep(c("FDR","Bonfferoni"),each = (facnum-1)),rep(1:(facnum-1),2), sep = "_")
           pindex = grep("PVAL",colnames(modelres))
           FDR = matrix(0,nrow = nrow(modelres),ncol = length(FDRname))
           for(i in pindex){
@@ -489,7 +489,7 @@ server <- function(input, output, session) {
           }
           FDR = as.data.frame(FDR)
           FDR <- FDR %>% 
-            purrr::set_names(paste(rep(c("FDR","Bofferoni"),each = (facnum-1)),rep(1:(facnum-1),2), sep = "_"))
+            purrr::set_names(paste(rep(c("FDR","Bonfferoni"),each = (facnum-1)),rep(1:(facnum-1),2), sep = "_"))
           modelres = cbind(modelres,FDR)
           
           return(modelres)
@@ -516,7 +516,7 @@ server <- function(input, output, session) {
         #### FDR---
         if(input$adjust){
           modelres$FDR = p.adjust(modelres$PVAL, method = "BH")
-          modelres$Bofferoni = p.adjust(modelres$PVAL,method = "bonferroni")
+          modelres$Bonfferoni = p.adjust(modelres$PVAL,method = "bonferroni")
           
           return(modelres)
         }else{
@@ -536,7 +536,7 @@ server <- function(input, output, session) {
       #### FDR---
       if(input$adjust){
         modelres$FDR = p.adjust(modelres$PVAL, method = "BH")
-        modelres$Bofferoni = p.adjust(modelres$PVAL,method = "bonferroni")
+        modelres$Bonfferoni = p.adjust(modelres$PVAL,method = "bonferroni")
         
         return(modelres)
       }else{
