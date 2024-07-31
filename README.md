@@ -6,6 +6,10 @@
   
   The goal of easyEWAS APP is to conduct Epigenome-wide association study for researchers less experienced in EWAS or parallel computing.
 
+## Author
+
+Yuting Wang, Xu Gao (corresponding author)
+
 ## How to Run
 
 You can run the APP in the R studio like so:
